@@ -18,7 +18,7 @@ To use the code, follow these steps:
 ``` bash
   pip install -r requirements.txt.
 ```
-* Clone the dataset from the following github: [Health Misinformation Dataset]()
+* Clone the dataset from the following github: [Health Misinformation Dataset](https://github.com/ikr3-lab/TREC-CLEF-HealthMisinfoSubdatasets)
 * Execute `first_stage_retrieval.py` to perform the first stage retrieval process.
 ```bash
 python first_stage_retrieval.py TREC True <dataset_path>
