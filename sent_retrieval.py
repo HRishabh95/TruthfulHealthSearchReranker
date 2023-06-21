@@ -5,10 +5,27 @@ import math
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 import os
+import sys
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 import language_tool_python
 
 tool=language_tool_python.LanguageTool('en-US')
+
+if len(sys.argv)>3:
+    data_set=sys.argv[1] # TREC or CLEF
+    indexing=sys.argv[2] # True or False
+    dataset_path=sys.argv[3] # Path of the coped folder
+else:
+    data_set = 'TREC'
+    indexing = False
+    dataset_path='/home/ubuntu/rupadhyay/CREDPASS'
+
+top_sens=0.20
+config={'TREC':{'final_retrieved_name':f'''{dataset_path}/TREC/TREC2020_BM25_clean_100.csv''',
+                'final_sent_path':f'''{dataset_path}/TREC/TREC2020_BM25_biobert_nltk_correct_sent_{int(top_sens*100)}.csv'''},
+        'CLEF':{'final_retrieved_name': f'''{dataset_path}/CLEF/CLEF2020_BM25_clean_100.csv''',
+                'final_sent_path':f'''{dataset_path}/CLEF/CLEF2020_BM25_biobert_nltk_correct_sent_{int(top_sens*100)}.csv'''}}
+
 
 def cal_grammar_score(sentence):
     import numpy as np
@@ -38,8 +55,7 @@ def cosine_similarity(x,y):
     denominator = square_rooted(x)*square_rooted(y)
     return numerator/float(denominator)
 
-# first_stage_rank=pd.read_csv('/home/ubuntu/rupadhyay/CREDPASS/Clef2020_BM25_clean_100.csv',sep='\t')
-first_stage_rank=pd.read_csv('/home/ubuntu/rupadhyay/CREDPASS/TREC2020_BM25_clean_100.csv',sep='\t')
+first_stage_rank=pd.read_csv(f'''{config[data_set]['final_retrieved_name']}''',sep='\t')
 
 top_10_sents=[]
 for ii,rows in first_stage_rank.iterrows():
@@ -61,7 +77,8 @@ for ii,rows in first_stage_rank.iterrows():
 
         d=sorted(simil,
                key=lambda x: -x[1])
-        top=int(0.25*len(simil))
+
+        top=int(top_sens*len(simil))
         top_10_d=d[:top]
         correct_top=[]
         for i in top_10_d:
@@ -88,4 +105,4 @@ for ii,rows in first_stage_rank.iterrows():
 
 top_10_sents_df=pd.DataFrame(top_10_sents)
 top_10_sents_df.columns=['qid','docid','docno','rank','score','query','text','top_sentences','top_scores']
-top_10_sents_df.to_csv('/home/ubuntu/rupadhyay/CREDPASS/trec2020_BM25_biobert_nltk_correct_sent_25.csv',sep='\t',index=False)
+top_10_sents_df.to_csv(f'''{config[data_set]['final_sent_path']}''',sep='\t',index=False)
