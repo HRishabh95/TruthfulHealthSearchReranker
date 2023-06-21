@@ -38,7 +38,7 @@ if len(sys.argv)>3:
 else:
     data_set = 'TREC'
     indexing = False
-    dataset_path='/home/ubuntu/rupadhyay/CREDPASS'
+    dataset_path='/home/ubuntu/'
 
 config={'TREC':{'folder_path':f'''{dataset_path}/TREC''',
                 'file_path':f'''{dataset_path}/TREC/TREC2020_1M_labeled.csv''',

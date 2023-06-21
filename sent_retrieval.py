@@ -15,12 +15,13 @@ if len(sys.argv)>3:
     data_set=sys.argv[1] # TREC or CLEF
     indexing=sys.argv[2] # True or False
     dataset_path=sys.argv[3] # Path of the coped folder
+    top_sens=sys.argv[4]
 else:
     data_set = 'TREC'
     indexing = False
-    dataset_path='/home/ubuntu/rupadhyay/CREDPASS'
+    dataset_path='/home/ubuntu/'
+    top_sens=0.20
 
-top_sens=0.20
 config={'TREC':{'final_retrieved_name':f'''{dataset_path}/TREC/TREC2020_BM25_clean_100.csv''',
                 'final_sent_path':f'''{dataset_path}/TREC/TREC2020_BM25_biobert_nltk_correct_sent_{int(top_sens*100)}.csv'''},
         'CLEF':{'final_retrieved_name': f'''{dataset_path}/CLEF/CLEF2020_BM25_clean_100.csv''',
