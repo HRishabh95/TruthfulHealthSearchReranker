@@ -19,6 +19,7 @@ To use the code, follow these steps:
   pip install -r requirements.txt.
 ```
 * Clone the dataset from the following github: [Health Misinformation Dataset](https://github.com/ikr3-lab/TREC-CLEF-HealthMisinfoSubdatasets)
+* But download the data collection from Commoncrawl and CLEF eHealth (website or organisers)
 * Execute `first_stage_retrieval.py` to perform the first stage retrieval process.
 ```bash
 python first_stage_retrieval.py TREC True <dataset_path>
@@ -32,3 +33,4 @@ For top 20 % sentences.
 ```bash
 python sent_retrieval.py TREC True /tmp/dataset 0.20
 ```
+* Use the above Dataframe from `sent_retrieval.py` for training Cross encoder.
